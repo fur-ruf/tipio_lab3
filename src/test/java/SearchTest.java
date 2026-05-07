@@ -3,7 +3,6 @@ import pages.SearchPage;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 public class SearchTest extends BaseTest {
 
     private SearchPage page;

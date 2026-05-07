@@ -6,29 +6,18 @@ import org.openqa.selenium.support.ui.*;
 
 import java.time.Duration;
 
-public class LoginTest {
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-    WebDriver driver;
-    WebDriverWait wait;
+public class LoginTest extends BaseTest {
+
+    private WebDriverWait wait;
 
     @BeforeEach
-    public void setup() {
-        String browser = System.getProperty("browser", "chrome");
-
-        driver = browser.equalsIgnoreCase("firefox")
-                ? new FirefoxDriver()
-                : new ChromeDriver();
-
-        driver.manage().window().maximize();
+    public void setupWait() {
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
     }
 
-    @AfterEach
-    public void tearDown() {
-        driver.quit();
-    }
-
-    // UC-02 Авторизация (частично из-за CAPTCHA)
+    // UC-02 Авторизация
     @Test
     public void testLoginWithEmail() {
         driver.get("https://www.linkedin.com/");
@@ -40,21 +29,23 @@ public class LoginTest {
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(@id,'captcha')]"))
         ));
 
-        if (isCaptchaPresent()) {
-            System.out.println("CAPTCHA detected — test stopped");
-            return;
-        }
+//        if (isCaptchaPresent()) {
+//            System.out.println("CAPTCHA detected — test stopped");
+//            return;
+//        }
 
-        type(By.name("session"), "test@email.com");
-        type(By.name("session_password"), "test123");
+        type(By.name("session_key"), "linabudukova@gmail.com");
+        type(By.name("session_password"), "TylerOneLove");
+
+        String oldUrl = driver.getCurrentUrl();
 
         safeClick(By.xpath("//button[@type='submit']"));
-
-        if (waitForCaptcha()) {
-            System.out.println("CAPTCHA detected after submit");
-        } else {
-            System.out.println("Login flow continued");
-        }
+        assertNotEquals(oldUrl, driver.getCurrentUrl(), "URL did not change");
+//        if (waitForCaptcha()) {
+//            System.out.println("CAPTCHA detected after submit");
+//        } else {
+//            System.out.println("Login flow continued");
+//        }
     }
 
     @Test
@@ -68,10 +59,10 @@ public class LoginTest {
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(@id,'captcha')]"))
         ));
 
-        if (isCaptchaPresent()) {
-            System.out.println("CAPTCHA detected — skip test");
-            return;
-        }
+//        if (isCaptchaPresent()) {
+//            System.out.println("CAPTCHA detected — skip test");
+//            return;
+//        }
 
         safeClick(By.xpath("//*[contains(text(),'Google')]"));
 

@@ -49,7 +49,7 @@ public class SearchPage extends BasePage {
     private final By jobCards = By.xpath("//div[contains(@class,'job-search-card')]");
     private final By firstJob = By.xpath("(//div[contains(@class,'job-search-card')]//a)[1]");
 
-    By companyLink = By.cssSelector("a[href*='/company/']");
+    private final By companyLink = By.cssSelector("a[href*='/company/']");
 
     private final By companyName = By.xpath("//h1");
 

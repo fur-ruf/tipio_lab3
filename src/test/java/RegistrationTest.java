@@ -1,34 +1,18 @@
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.*;
 
 import java.time.Duration;
 
-public class RegistrationTest {
-
-    WebDriver driver;
-    WebDriverWait wait;
+public class RegistrationTest extends BaseTest {
+    private WebDriverWait wait;
 
     @BeforeEach
-    public void setup() {
-        String browser = System.getProperty("browser", "chrome");
-
-        driver = browser.equalsIgnoreCase("firefox")
-                ? new FirefoxDriver()
-                : new ChromeDriver();
-
-        driver.manage().window().maximize();
+    public void setupWait() {
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
     }
 
-    @AfterEach
-    public void tearDown() {
-        driver.quit();
-    }
-
-    // UC-01. Регистрация через почту (частично из-за CAPTCHA)
+    // UC-01. Регистрация через почту (--частично-- из-за CAPTCHA)
     @Test
     public void testRegistrationWithEmail() {
         driver.get("https://www.linkedin.com/");
@@ -40,10 +24,10 @@ public class RegistrationTest {
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(@id,'captcha')]"))
         ));
 
-        if (isCaptchaPresent()) {
-            System.out.println("CAPTCHA detected — test stopped");
-            return;
-        }
+//        if (isCaptchaPresent()) {
+//            System.out.println("CAPTCHA detected — test stopped");
+//            return;
+//        }
 
         type(By.name("email-address"), "test@email.com");
         type(By.name("password"), "test123");
@@ -55,10 +39,10 @@ public class RegistrationTest {
                 ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(@id,'captcha')]"))
         ));
 
-        if (isCaptchaPresent()) {
-            System.out.println("CAPTCHA detected after submit");
-            return;
-        }
+//        if (isCaptchaPresent()) {
+//            System.out.println("CAPTCHA detected after submit");
+//            return;
+//        }
 
         type(By.name("first-name"), "Tyler");
         type(By.name("last-name"), "Durden");
